@@ -1,0 +1,40 @@
+/*
+ * riaps deployment constraints dsl
+ * DSL for RIAPS generating deployment
+ */
+AppDeployment:
+  'app' name=ID '{'
+  ( copies += Copies )?
+  ( colocation += Colocation )?
+  ( separation += Separation )?
+  ( hostdeployment += HostDeployment )?
+ '}'
+;
+
+Copies:
+	actor=Actor 'copies' copies=INT ';'
+;
+
+Colocation:
+	'colocate' '(' actors+=Actor[','] ')' ';'
+;
+
+Separation:
+	('separate' '(' actorsl +=Actor[','] ')' 'and' '(' actorsr+=Actor[','] ')' ';') | ('separate' '(' actors+=Actor[','] ')' ';')
+;
+HostDeployment:
+	'deploy' '(' actors+=Actor[','] ')' 'on' '(' host=Host ')' ';'
+;
+
+Actor:
+	name=ID 
+;
+	
+Host:
+	name=/[\w\.-]+/
+;
+
+// Obligatory comment spec
+Comment:
+ /\/\/.*$/
+;
