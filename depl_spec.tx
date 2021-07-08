@@ -4,10 +4,12 @@
  */
 AppDeployment:
   'app' name=ID '{'
-  ( copies += Copies )?
-  ( colocation += Colocation )?
-  ( separation += Separation )?
-  ( hostdeployment += HostDeployment )?
+  ( copies += Copies )*
+  ( colocation += Colocation )*
+  ( separation += Separation )*
+  ( hostdeployment += HostDeployment )*
+  ( usage += Usage)*
+  ( networkswitch = NetworkSwitch)?
  '}'
 ;
 
@@ -26,12 +28,28 @@ HostDeployment:
 	'deploy' '(' actors+=Actor[','] ')' 'on' '(' host=Host ')' ';'
 ;
 
+Usage:
+	'use' 'limits' 'for' hw=HW 'on' (all='all'|'(' hosts+=Host[','] ')') ';'
+;
+
+NetworkSwitch:
+	'network' 'switch' switch=Switch ';'
+;
+
 Actor:
 	name=ID 
 ;
 	
 Host:
 	name=/[\w\.-]+/
+;
+
+HW:
+	name=ID
+;
+
+Switch:
+	name=ID
 ;
 
 // Obligatory comment spec
